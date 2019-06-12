@@ -1,10 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+let cors = require('cors')
+
 const jwt = require('jsonwebtoken');
 const secrets = require('./config/secrets.js');
 const Users = require('./data/users-model');
 
 const server = express();
+
+server.use(cors())
 
 server.use(express.json());
 
