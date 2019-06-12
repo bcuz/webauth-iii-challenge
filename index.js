@@ -8,6 +8,19 @@ const server = express();
 
 server.use(express.json());
 
+server.get('/api/users', restricted, async (req, res) => {
+  try {
+      const users = await Users.get();
+      res.status(200).json(users);
+  } catch (error) {
+    // log error to server
+    console.log(error);
+    res.status(500).json({
+      message: 'Error retrieving the users',
+    });
+  }
+});
+
 server.post('/api/register', async (req, res) => {
   let user = req.body;
 
@@ -64,6 +77,24 @@ server.post('/api/login', async (req, res) => {
     });
   }
 });
+
+function restricted(req, res, next) {
+  
+  const token = req.headers.authorization;
+
+  if (token) {
+    jwt.verify(token, secrets.jwtSecret, (err, payload) => {
+      if (err) {
+        res.status(403).json({ message: 'You are not authorized' });
+      } else {
+        req.userId = payload.userId;
+        next();
+      }
+    })
+  } else {
+    res.status(400).json({ message: 'No credentials provided' });
+  }
+}
 
 function generateToken(user) {
   return jwt.sign({
