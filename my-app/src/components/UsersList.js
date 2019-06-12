@@ -9,8 +9,7 @@ class UsersList extends Component {
   componentDidMount() {
     axios
   .get("http://localhost:5001/api/users", {
-      // headers: { Authorization: localStorage.getItem("token") }
-      headers: { Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU2MDMwMzY0MiwiZXhwIjoxNTYwMzkwMDQyfQ.VUqag1FSzFFfp9yedZbgUpgYdQo4yTUceJkTVK9lcjU' }
+      headers: { Authorization: localStorage.getItem("token") }
     })
     .then(res => {
       // console.log(res);
