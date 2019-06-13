@@ -33,7 +33,12 @@ server.post('/api/register', async (req, res) => {
 
   try {
     const added = await Users.add(user);
-    res.status(201).json(added);
+    const token = generateToken(added)
+      
+      res.status(201).json({
+        message: `Welcome ${added.username}!`,
+        authToken: token
+      });
   } catch (error) {
     // log error to server
     console.log(error);
