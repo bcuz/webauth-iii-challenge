@@ -23,11 +23,11 @@ class Register extends React.Component {
     e.preventDefault();
     axios
     .post("http://localhost:5001/api/register", this.state.credentials)
-    .then(res => {
+    .then(res => {      
       
-      // localStorage.setItem("token", res.data.authToken);
+      localStorage.setItem("token", res.data.authToken);
     })
-    .then(() => this.props.history.push("/login"))
+    .then(() => this.props.history.push("/protected"))
     .catch(err => {
       console.log("login err: ", err);
       // if (err.response && err.response.status === 401) {
