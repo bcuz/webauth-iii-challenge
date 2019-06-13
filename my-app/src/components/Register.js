@@ -1,11 +1,12 @@
 import React from "react";
 import axios from 'axios';
 
-class Login extends React.Component {
+class Register extends React.Component {
   state = {
     credentials: {
       username: "",
-      password: ""
+      password: "",
+      department: ""
     }
   };
 
@@ -18,20 +19,20 @@ class Login extends React.Component {
     });
   };
 
-  handleLogin = e => {
+  handleRegister = e => {
     e.preventDefault();
     axios
-    .post("http://localhost:5001/api/login", this.state.credentials)
+    .post("http://localhost:5001/api/register", this.state.credentials)
     .then(res => {
       
-      localStorage.setItem("token", res.data.authToken);
+      // localStorage.setItem("token", res.data.authToken);
     })
-    .then(() => this.props.history.push("/protected"))
+    .then(() => this.props.history.push("/login"))
     .catch(err => {
       console.log("login err: ", err);
-      if (err.response && err.response.status === 401) {
-        localStorage.removeItem("token");
-      }
+      // if (err.response && err.response.status === 401) {
+      //   localStorage.removeItem("token");
+      // }
     });
   };
 
@@ -39,23 +40,30 @@ class Login extends React.Component {
     return (
       <div>
         {/* {this.props.loginError && <p>Error on login, try again</p>} */}
-        <form onSubmit={this.handleLogin}>
-          <label htmlFor="">username</label>          
+        <form onSubmit={this.handleRegister}>
+          <label htmlFor="">username</label>
           <input
             type="text"
             name="username"
             value={this.state.credentials.username}
             onChange={this.handleChange}
           />
-          <label htmlFor="">password</label>          
+          <label htmlFor="">password</label>
           <input
             type="password"
             name="password"
             value={this.state.credentials.password}
             onChange={this.handleChange}
           />
+          <label htmlFor="">department</label>
+          <input
+            type="text"
+            name="department"
+            value={this.state.credentials.department}
+            onChange={this.handleChange}
+          />
           <button>
-            Log in
+            Register
           </button>
         </form>
       </div>
@@ -63,4 +71,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default Register;
