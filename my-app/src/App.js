@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, NavLink } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import PrivateRoute from "./components/PrivateRoute";
@@ -11,15 +11,15 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-        <ul>
+        <ul className='nav'>
           <li>
-            <Link to="/register">Register</Link>
+            <NavLink to="/register">Register</NavLink>
           </li>
           <li>
-            <Link to="/login">Login</Link>
+            <NavLink to="/login">Login</NavLink>
           </li>
           <li>
-            <Link to="/protected">Protected Page</Link>
+            <NavLink to="/protected">Protected Page</NavLink>
           </li>
         </ul>
         <Route path="/register" component={Register} />
