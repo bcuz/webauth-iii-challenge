@@ -26,7 +26,7 @@ class Login extends React.Component {
       
       localStorage.setItem("token", res.data.authToken);
     })
-    .then(() => this.props.history.push("/protected"))
+    .then(() => this.props.history.push("/users"))
     .catch(err => {
       console.log("login err: ", err);
       if (err.response && err.response.status === 401) {

@@ -25,12 +25,12 @@ class App extends Component {
             <NavLink to="/login">Login</NavLink>
           </li>
           <li>
-            <NavLink to="/protected">Protected Page</NavLink>
+            <NavLink to="/users">Users</NavLink>
           </li>
         </ul>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <PrivateRoute exact path="/protected" component={UsersList} />
+        <PrivateRoute exact path="/users" component={UsersList} />
         </div>
     );
   }
