@@ -1,34 +1,27 @@
 import React, { Component } from 'react';
-import axios from "axios";
+import { connect } from 'react-redux'
+import {getUsers} from "../actions";
 
 class UsersList extends Component {
-  state = {
-    users: []
-  }
 
   componentDidMount() {
-    axios
-  .get("http://localhost:5001/api/users", {
-      headers: { Authorization: localStorage.getItem("token") }
-    })
-    .then(res => {
-      // console.log(res);
-      
-      this.setState({users: res.data })
-    })
-    .catch(err => console.log(err));
-    
+    this.props.getUsers()
   }
 
   render() {
     return (
       <div>      
+        {this.props.fetchingData && <p>Loading...</p>}
 
-        <ul>{this.state.users.map(user => <li key={user.id}>{user.username}</li> )}</ul>
+        <ul>{this.props.users.map(user => <li key={user.id}>{user.username}</li> )}</ul>
 
       </div>
     );
   }
 }
 
-export default UsersList
+const mapStateToProps = state => {
+  return { users: state.users, fetchingData: state.fetchingData}
+}
+
+export default connect(mapStateToProps, {getUsers})(UsersList);

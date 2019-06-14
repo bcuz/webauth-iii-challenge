@@ -1,5 +1,6 @@
 import React from "react";
-import axios from 'axios';
+import { connect } from "react-redux";
+import { register } from "../actions";
 
 class Register extends React.Component {
   state = {
@@ -21,25 +22,14 @@ class Register extends React.Component {
 
   handleRegister = e => {
     e.preventDefault();
-    axios
-    .post("http://localhost:5001/api/register", this.state.credentials)
-    .then(res => {      
-      
-      localStorage.setItem("token", res.data.authToken);
-    })
-    .then(() => this.props.history.push("/users"))
-    .catch(err => {
-      console.log("login err: ", err);
-      // if (err.response && err.response.status === 401) {
-      //   localStorage.removeItem("token");
-      // }
-    });
+    this.props
+      .register(this.state.credentials)
+      .then(res => (res === false) ? null : this.props.history.push("/users"))
   };
 
   render() {
     return (
       <div>
-        {/* {this.props.loginError && <p>Error on login, try again</p>} */}
         <form onSubmit={this.handleRegister}>
           <label htmlFor="">username</label>
           <input
@@ -65,10 +55,20 @@ class Register extends React.Component {
           <button>
             Register
           </button>
+        {this.props.registerError && <p>Error registering, try again</p>}
         </form>
       </div>
     );
   }
 }
 
-export default Register;
+const mapStateToProps = state => {
+  return {
+    registerError: state.registerError
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { register }
+)(Register);

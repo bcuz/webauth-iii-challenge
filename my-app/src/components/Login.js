@@ -1,5 +1,6 @@
 import React from "react";
-import axios from 'axios';
+import { connect } from "react-redux";
+import { login } from "../actions";
 
 class Login extends React.Component {
   state = {
@@ -20,25 +21,15 @@ class Login extends React.Component {
 
   handleLogin = e => {
     e.preventDefault();
-    axios
-    .post("http://localhost:5001/api/login", this.state.credentials)
-    .then(res => {
-      
-      localStorage.setItem("token", res.data.authToken);
-    })
-    .then(() => this.props.history.push("/users"))
-    .catch(err => {
-      console.log("login err: ", err);
-      if (err.response && err.response.status === 401) {
-        localStorage.removeItem("token");
-      }
-    });
+
+    this.props
+      .login(this.state.credentials)
+      .then(() => this.props.history.push("/users"));
   };
 
   render() {
     return (
       <div>
-        {/* {this.props.loginError && <p>Error on login, try again</p>} */}
         <form onSubmit={this.handleLogin}>
           <label htmlFor="">username</label>          
           <input
@@ -58,9 +49,19 @@ class Login extends React.Component {
             Log in
           </button>
         </form>
+        {this.props.loginError && <p>Error on login, try again</p>}
       </div>
     );
   }
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    loginError: state.loginError
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { login }
+)(Login);
