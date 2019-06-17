@@ -1,10 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+let cors = require('cors')
+
 const jwt = require('jsonwebtoken');
 const secrets = require('./config/secrets.js');
 const Users = require('./data/users-model');
 
 const server = express();
+
+server.use(cors())
 
 server.use(express.json());
 
@@ -33,7 +37,12 @@ server.post('/api/register', async (req, res) => {
 
   try {
     const added = await Users.add(user);
-    res.status(201).json(added);
+    const token = generateToken(added)
+      
+      res.status(201).json({
+        message: `Welcome ${added.username}!`,
+        authToken: token
+      });
   } catch (error) {
     // log error to server
     console.log(error);
